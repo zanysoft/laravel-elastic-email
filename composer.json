@@ -1,0 +1,34 @@
+{
+   "name": "zanysoft/laravel-elastic-email",
+   "description": "A Laravel wrapper for Elastic Email",
+   "keywords": ["laravel", "email", "elastic email"],
+   "license": "MIT",
+   "authors": [
+	  {
+		 "company": "Zany Soft",
+		 "email": "info@zanysoft.co",
+		 "url": "http://www.zanysoft.co",
+		 "role": "Developer"
+	  }
+   ],
+   "support": {
+	  "email": "info@zanysoft.co"
+   },
+   "require": {
+	  "laravel/framework": "5.1.x|5.2.x|5.3.x|5.4.x|5.5.x|5.6.x",
+	  "guzzlehttp/guzzle": ">=6.3"
+   },
+   "autoload": {
+	  "psr-4": {
+		 "ZanySoft\\ElasticEmail\\": "src/"
+	  }
+   },
+   "extra": {
+	  "laravel": {
+		 "providers": [
+			"ZanySoft\\ElasticEmail\\MailServiceProvider"
+		 ]
+	  }
+   },
+   "minimum-stability": "stable"
+}
