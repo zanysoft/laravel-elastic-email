@@ -31,7 +31,7 @@ class ElasticTransport extends Transport
      * THe Elastic Email API end-point.
      * @var string
      */
-    protected $url = 'https://api.elasticemail.com/v2/email/send';
+    protected $url = 'http://api.elasticemail.com/v2/email/send';
     
     /**
      * Create a new Elastic Email transport instance.
@@ -70,8 +70,6 @@ class ElasticTransport extends Transport
             'body_text'   => $this->getText($message)
         ];
 
-        $is_local = request()->server();
-        
         $result = $this->client->post($this->url, [
             'form_params' => $data
         ]);

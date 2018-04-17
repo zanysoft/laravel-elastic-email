@@ -15,15 +15,4 @@ class MailServiceProvider extends LaravelMailServiceProvider
             return new TransportManager($app);
         });
     }
-    
-    public function boot() {
-        
-        /*--------------------------------------------------------------------------
-        | Pulish configuration file
-        |--------------------------------------------------------------------------*/
-        
-        $this->publishes([
-            __DIR__ . '/Config/elastic-email.php' => config_path('elastic-email.php'),
-        ], 'laravel-mail');
-    }
 }
