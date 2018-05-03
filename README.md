@@ -43,6 +43,18 @@ Next, in config/app.php, add the ElasticEmail to the aliases array
 
 Finally switch your default mail provider to elastic email in your .env file by setting MAIL_DRIVER=elastic_email
 
-### Usage ###
+### MailService Usage ###
 
 This package works exactly like Laravel's native mailers. Refer to Laravel's Mail documentation.
+
+### Api Usage ###
+For documentation visit https://api.elasticemail.com/public/help
+```php
+
+    //For contact
+    ElasticEmail::Contact()
+
+    //For emails
+    ElasticEmail::Email()
+
+```

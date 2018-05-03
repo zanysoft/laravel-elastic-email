@@ -453,7 +453,7 @@ class Contact extends ApiClient
      *
      * @return int
      */
-    public function upload($contactFile, $allowUnsubscribe = false, $status = 0, $consentDate = NULL, $consentIP = NULL) {
+    public function Upload($contactFile, $allowUnsubscribe = false, $status = 0, $consentDate = NULL, $consentIP = NULL) {
         return $this->request('contact/upload', array(
             'allowUnsubscribe' => $allowUnsubscribe,
             'listID' => $this->list_id,

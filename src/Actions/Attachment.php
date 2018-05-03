@@ -22,7 +22,7 @@ class Attachment extends ApiClient
      *
      * @return File
      */
-    public function get($attachmentID) {
+    public function Get($attachmentID) {
         return $this->getFile('attachment/get', array(
             'attachmentID' => $attachmentID
         ));
@@ -45,7 +45,7 @@ class Attachment extends ApiClient
      * Lists all your available attachments
      * @return array
      */
-    public function listAll() {
+    public function ListAll() {
         return $this->request('attachment/listall');
     }
     
@@ -54,7 +54,7 @@ class Attachment extends ApiClient
      *
      * @param string $fileName Name of your file.
      */
-    public function remove($fileName) {
+    public function Remove($fileName) {
         return $this->request('attachment/remove', array(
             'fileName' => $fileName
         ));
@@ -65,7 +65,7 @@ class Attachment extends ApiClient
      *
      * @param File $attachmentFile Content of your attachment.
      */
-    public function upload($attachmentFile) {
+    public function Upload($attachmentFile) {
         return $this->request('attachment/upload', array(), "POST", $attachmentFile);
     }
     
