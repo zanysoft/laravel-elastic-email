@@ -5,16 +5,70 @@ use ZanySoft\ElasticEmail\Exception\ApiException;
 
 class ApiClient
 {
-    private $apiKey;
-    private $account;
-    private $ApiUri = "https://api.elasticemail.com/v2/";
+    /**
+     * The Elastic Email API key.
+     * @var string
+     */
+    protected $apiKey;
     
-    public function __construct($apiKey, $account) {
-        $this->apiKey  = $apiKey;
-        $this->account = $account;
+    /**
+     * The Elastic Email username.
+     * @var string
+     */
+    protected $account;
+    
+    /**
+     * THe Elastic Email API end-point.
+     * @var string
+     */
+    protected $ApiUri = "https://api.elasticemail.com/v2/";
+    
+    /**
+     * THe Elastic Email API end-point.
+     * @var string
+     */
+    protected $list_name = NULL;
+    
+    protected $list_id = NULL;
+    
+    /*
+     * @param string $apikey    ApiKey that gives you access to our SMTP and HTTP API's.
+     */
+    public function __construct($apiKey = NULL, $account = NULL) {
+        
+        $config = app('config')->get('services.elastic_email', []);
+        
+        $this->apiKey  = $apiKey ? $apiKey : $config['key'];
+        $this->account = $account ? $account : $config['account'];
     }
     
-    public function Request($target, $data = array(), $method = "GET", array $attachments = array()) {
+    public function setApiKey($apiKey) {
+        $this->apiKey = $apiKey;
+    }
+    
+    public function setListId($list_id) {
+        
+        if ($list_id == '' || $list_id == NULL) {
+            throw new \Exception("List id cannot be null or empty");
+        }
+        
+        $this->list_id = $list_id;
+        
+        return $this;
+    }
+    
+    public function setListName($list_name) {
+
+        if ($list_name == '' || $list_name == NULL) {
+            throw new \Exception("List name cannot be null or empty");
+        }
+
+        $this->list_name = $list_name;
+
+        return $this;
+    }
+    
+    public function request($target, $data = array(), $method = "GET", array $attachments = array()) {
         $this->cleanNullData($data);
         $data['apikey'] = $this->apiKey;
         $ch             = curl_init();
@@ -51,6 +105,7 @@ class ApiClient
         }
         curl_close($ch);
         $jsonResult = json_decode($response);
+
         $parseError = $this->getParseError();
         if ($parseError !== false) {
             throw new ApiException($url, $method, 'Request Error: ' . $parseError, $response);
@@ -58,8 +113,8 @@ class ApiClient
         if ($jsonResult->success === false) {
             throw new ApiException($url, $method, $jsonResult->error);
         }
-        
-        return (isset($jsonResult->data) ? $jsonResult->data : NULL);
+
+        return (isset($jsonResult->data) ? $jsonResult->data : $jsonResult);
     }
     
     public function executeWithRetry($ch, $sleep = false) {
@@ -105,10 +160,6 @@ class ApiClient
         curl_close($ch);
         
         return $response;
-    }
-    
-    public function SetApiKey($apiKey) {
-        $this->apiKey = $apiKey;
     }
     
     private function cleanNullData(&$data) {

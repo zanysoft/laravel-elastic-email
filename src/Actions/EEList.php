@@ -4,15 +4,8 @@ namespace ZanySoft\ElasticEmail\Actions;
 /**
  * API methods for managing your Lists
  */
-class EEList
+class EEList extends ApiClient
 {
-    protected $client;
-    protected $account;
-    
-    public function __construct($apiKey, $account) {
-        $this->account = $account;
-        $this->client  = new ApiClient($apiKey, $account);
-    }
     
     /**
      * Create new list, based on filtering rule or list of IDs
@@ -28,7 +21,7 @@ class EEList
      * @return int
      */
     public function Add($listName, array $emails = array(), $allowUnsubscribe = false, $rule = NULL, $allContacts = false) {
-        return $this->client->Request('list/add', array(
+        return $this->request('list/add', array(
             'listName' => $listName,
             'createEmptyList' => empty($emails) ? true : false,
             'allowUnsubscribe' => $allowUnsubscribe,
@@ -48,7 +41,7 @@ class EEList
      * @param bool $allContacts True: Include every Contact in your Account. Otherwise, false
      */
     public function AddContacts($listName, $rule = NULL, array $emails = array(), $allContacts = false) {
-        return $this->client->Request('list/addcontacts', array(
+        return $this->request('list/addcontacts', array(
             'listName' => $listName,
             'rule' => $rule,
             'emails' => (count($emails) === 0) ? NULL : join(';', $emails),
@@ -69,7 +62,7 @@ class EEList
      * @return int
      */
     public function EECopy($sourceListName, $newlistName = NULL, $createEmptyList = NULL, $allowUnsubscribe = NULL, $rule = NULL) {
-        return $this->client->Request('list/copy', array(
+        return $this->request('list/copy', array(
             'sourceListName' => $sourceListName,
             'newlistName' => $newlistName,
             'createEmptyList' => $createEmptyList,
@@ -91,7 +84,7 @@ class EEList
      * @return int
      */
     public function CreateFromCampaign($campaignID, $listName, array $statuses = array()) {
-        return $this->client->Request('list/createfromcampaign', array(
+        return $this->request('list/createfromcampaign', array(
             'campaignID' => $campaignID,
             'listName' => $listName,
             'statuses' => (count($statuses) === 0) ? NULL : join(';', $statuses)
@@ -110,7 +103,7 @@ class EEList
      * @param bool $allContacts      True: Include every Contact in your Account. Otherwise, false
      */
     public function CreateNthSelectionLists($listName, $numberOfLists, $excludeBlocked = true, $allowUnsubscribe = false, $rule = NULL, $allContacts = false) {
-        return $this->client->Request('list/createnthselectionlists', array(
+        return $this->request('list/createnthselectionlists', array(
             'listName' => $listName,
             'numberOfLists' => $numberOfLists,
             'excludeBlocked' => $excludeBlocked,
@@ -134,7 +127,7 @@ class EEList
      * @return int
      */
     public function CreateRandomList($listName, $count, $excludeBlocked = true, $allowUnsubscribe = false, $rule = NULL, $allContacts = false) {
-        return $this->client->Request('list/createrandomlist', array(
+        return $this->request('list/createrandomlist', array(
             'listName' => $listName,
             'count' => $count,
             'excludeBlocked' => $excludeBlocked,
@@ -151,7 +144,7 @@ class EEList
      * @param string $listName Name of your list.
      */
     public function EEDelete($listName) {
-        return $this->client->Request('list/delete', array(
+        return $this->request('list/delete', array(
             'listName' => $listName
         ));
     }
@@ -166,7 +159,7 @@ class EEList
      * @param string $fileName   Name of your file.
      */
     public function Export($listName, $fileFormat = 1, $compressionFormat = 0, $fileName = NULL) {
-        return $this->client->Request('list/export', array(
+        return $this->request('list/export', array(
             'listName' => $listName,
             'fileFormat' => $fileFormat,
             'compressionFormat' => $compressionFormat,
@@ -184,7 +177,7 @@ class EEList
      * @return array
      */
     public function EElist($from = NULL, $to = NULL) {
-        return $this->client->Request('list/list', array(
+        return $this->request('list/list', array(
             'from' => $from,
             'to' => $to
         ));
@@ -197,7 +190,7 @@ class EEList
      * @param string $listName Name of your list.
      */
     public function Load($listName) {
-        return $this->client->Request('list/load', array(
+        return $this->request('list/load', array(
             'listName' => $listName
         ));
     }
@@ -214,7 +207,7 @@ class EEList
      * @param string $rule        Query used for filtering.
      */
     public function MoveContacts($oldListName, $newListName, array $emails = array(), $moveAll = NULL, array $statuses = array(), $rule = NULL) {
-        return $this->client->Request('list/movecontacts', array(
+        return $this->request('list/movecontacts', array(
             'oldListName' => $oldListName,
             'newListName' => $newListName,
             'emails' => (count($emails) === 0) ? NULL : join(';', $emails),
@@ -233,7 +226,7 @@ class EEList
      * @param array            <string> $emails Comma delimited list of contact emails
      */
     public function RemoveContacts($listName, $rule = NULL, array $emails = array()) {
-        return $this->client->Request('list/removecontacts', array(
+        return $this->request('list/removecontacts', array(
             'listName' => $listName,
             'rule' => $rule,
             'emails' => (count($emails) === 0) ? NULL : join(';', $emails)
@@ -249,7 +242,7 @@ class EEList
      * @param bool $allowUnsubscribe True: Allow unsubscribing from this list. Otherwise, false
      */
     public function Update($listName, $newListName = NULL, $allowUnsubscribe = false) {
-        return $this->client->Request('list/update', array(
+        return $this->request('list/update', array(
             'listName' => $listName,
             'newListName' => $newListName,
             'allowUnsubscribe' => $allowUnsubscribe

@@ -1,18 +1,11 @@
 <?php
 namespace ZanySoft\ElasticEmail\Actions;
 
-class Account
+class Account extends ApiClient
 {
-    protected $client;
-    
-    public function __construct($apiKey, $account) {
-        $this->client = new ApiClient($apiKey, $account);
-    }
-    
     /**
      * Create new subaccount and provide most important data about it.
      *
-     * @param string $apikey               ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $email                Proper email address.
      * @param string $password             Current password.
      * @param string $confirmPassword      Repeat new password.
@@ -35,7 +28,7 @@ class Account
         $email, $password, $confirmPassword, $requiresEmailCredits = false, $enableLitmusTest = false, $requiresLitmusCredits = false, $maxContacts = 0, $enablePrivateIPRequest = true, $sendActivation = false, $returnUrl = NULL, $sendingPermission = NULL, $enableContactFeatures = NULL,
         $poolName = NULL, $emailSizeLimit = 10, $dailySendLimit = NULL
     ) {
-        return $this->client->Request('account/addsubaccount', array(
+        return $this->request('account/addsubaccount', array(
             'email' => $email,
             'password' => $password,
             'confirmPassword' => $confirmPassword,
@@ -57,7 +50,6 @@ class Account
     /**
      * Add email, template or litmus credits to a sub-account
      *
-     * @param string $apikey          ApiKey that gives you access to our SMTP and HTTP API's.
      * @param int $credits            Amount of credits to add
      * @param string $notes           Specific notes about the transaction
      * @param $creditType             Type of credits to add (Email (9) or Litmus (17))
@@ -65,7 +57,7 @@ class Account
      * @param string $publicAccountID Public key of sub-account to add credits to. Use subAccountEmail or publicAccountID not both.
      */
     public function AddSubAccountCredits($credits, $notes, $creditType = 9, $subAccountEmail = NULL, $publicAccountID = NULL) {
-        return $this->client->Request('account/addsubaccountcredits', array(
+        return $this->request('account/addsubaccountcredits', array(
             'credits' => $credits,
             'notes' => $notes,
             'creditType' => $creditType,
@@ -77,7 +69,6 @@ class Account
     /**
      * Change your email address. Remember, that your email address is used as login!
      *
-     * @param string $apikey       ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $newEmail     New email address.
      * @param string $confirmEmail New email address.
      * @param string $sourceUrl    URL from which request was sent.
@@ -85,7 +76,7 @@ class Account
      * @return string
      */
     public function ChangeEmail($newEmail, $confirmEmail, $sourceUrl = "https://elasticemail.com/account/") {
-        return $this->client->Request('account/changeemail', array(
+        return $this->request('account/changeemail', array(
             'newEmail' => $newEmail,
             'confirmEmail' => $confirmEmail,
             'sourceUrl' => $sourceUrl
@@ -95,13 +86,12 @@ class Account
     /**
      * Create new password for your account. Password needs to be at least 6 characters long.
      *
-     * @param string $apikey          ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $currentPassword Current password.
      * @param string $newPassword     New password for account.
      * @param string $confirmPassword Repeat new password.
      */
     public function ChangePassword($currentPassword, $newPassword, $confirmPassword) {
-        return $this->client->Request('account/changepassword', array(
+        return $this->request('account/changepassword', array(
             'currentPassword' => $currentPassword,
             'newPassword' => $newPassword,
             'confirmPassword' => $confirmPassword
@@ -111,13 +101,12 @@ class Account
     /**
      * Deletes specified Subaccount
      *
-     * @param string $apikey          ApiKey that gives you access to our SMTP and HTTP API's.
      * @param bool $notify            True, if you want to send an email notification. Otherwise, false
      * @param string $subAccountEmail Email address of sub-account
      * @param string $publicAccountID Public key of sub-account to delete. Use subAccountEmail or publicAccountID not both.
      */
     public function DeleteSubAccount($notify = true, $subAccountEmail = NULL, $publicAccountID = NULL) {
-        return $this->client->Request('account/deletesubaccount', array(
+        return $this->request('account/deletesubaccount', array(
             'notify' => $notify,
             'subAccountEmail' => $subAccountEmail,
             'publicAccountID' => $publicAccountID
@@ -127,14 +116,13 @@ class Account
     /**
      * Returns API Key for the given Sub Account.
      *
-     * @param string $apikey          ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $subAccountEmail Email address of sub-account
      * @param string $publicAccountID Public key of sub-account to retrieve sub-account API Key. Use subAccountEmail or publicAccountID not both.
      *
      * @return string
      */
     public function GetSubAccountApiKey($subAccountEmail = NULL, $publicAccountID = NULL) {
-        return $this->client->Request('account/getsubaccountapikey', array(
+        return $this->request('account/getsubaccountapikey', array(
             'subAccountEmail' => $subAccountEmail,
             'publicAccountID' => $publicAccountID
         ));
@@ -142,64 +130,50 @@ class Account
     
     /**
      * Lists all of your subaccounts
-     *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
-     *
      * @return array
      */
     public function GetSubAccountList() {
-        return $this->client->Request('account/getsubaccountlist');
+        return $this->request('account/getsubaccountlist');
     }
     
     /**
      * Loads your account. Returns detailed information about your account.
-     *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
+     
      */
     public function Load() {
-        return $this->client->Request('account/load');
+        return $this->request('account/load');
     }
     
     /**
      * Load advanced options of your account
-     *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
+     
      */
     public function LoadAdvancedOptions() {
-        return $this->client->Request('account/loadadvancedoptions');
+        return $this->request('account/loadadvancedoptions');
     }
     
     /**
      * Lists email credits history
-     *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
-     *
      * @return array
      */
     public function LoadEmailCreditsHistory() {
-        return $this->client->Request('account/loademailcreditshistory');
+        return $this->request('account/loademailcreditshistory');
     }
     
     /**
      * Lists litmus credits history
-     *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
-     *
      * @return array
      */
     public function LoadLitmusCreditsHistory() {
-        return $this->client->Request('account/loadlitmuscreditshistory');
+        return $this->request('account/loadlitmuscreditshistory');
     }
     
     /**
      * Shows queue of newest notifications - very useful when you want to check what happened with mails that were not received.
-     *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
-     *
      * @return array
      */
     public function LoadNotificationQueue() {
-        return $this->client->Request('account/loadnotificationqueue');
+        return $this->request('account/loadnotificationqueue');
     }
     
     /**
@@ -213,7 +187,7 @@ class Account
      * @return array
      */
     public function LoadPaymentHistory($limit, $offset, $fromDate, $toDate) {
-        return $this->client->Request('account/loadpaymenthistory', array(
+        return $this->request('account/loadpaymenthistory', array(
             'limit' => $limit,
             'offset' => $offset,
             'fromDate' => $fromDate,
@@ -223,35 +197,30 @@ class Account
     
     /**
      * Lists all referral payout history
-     *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
-     *
      * @return array
      */
     public function LoadPayoutHistory() {
-        return $this->client->Request('account/loadpayouthistory');
+        return $this->request('account/loadpayouthistory');
     }
     
     /**
      * Shows information about your referral details
-     *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
+     
      */
     public function LoadReferralDetails() {
-        return $this->client->Request('account/loadreferraldetails');
+        return $this->request('account/loadreferraldetails');
     }
     
     /**
      * Shows latest changes in your sending reputation
      *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
-     * @param int $limit     Maximum of loaded items.
-     * @param int $offset    How many items should be loaded ahead.
+     * @param int $limit  Maximum of loaded items.
+     * @param int $offset How many items should be loaded ahead.
      *
      * @return array
      */
     public function LoadReputationHistory($limit = 20, $offset = 0) {
-        return $this->client->Request('account/loadreputationhistory', array(
+        return $this->request('account/loadreputationhistory', array(
             'limit' => $limit,
             'offset' => $offset
         ));
@@ -259,24 +228,22 @@ class Account
     
     /**
      * Shows detailed information about your actual reputation score
-     *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
+     
      */
     public function LoadReputationImpact() {
-        return $this->client->Request('account/loadreputationimpact');
+        return $this->request('account/loadreputationimpact');
     }
     
     /**
      * Returns detailed spam check.
      *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
-     * @param int $limit     Maximum of loaded items.
-     * @param int $offset    How many items should be loaded ahead.
+     * @param int $limit  Maximum of loaded items.
+     * @param int $offset How many items should be loaded ahead.
      *
      * @return array
      */
     public function LoadSpamCheck($limit = 20, $offset = 0) {
-        return $this->client->Request('account/loadspamcheck', array(
+        return $this->request('account/loadspamcheck', array(
             'limit' => $limit,
             'offset' => $offset
         ));
@@ -285,14 +252,13 @@ class Account
     /**
      * Lists email credits history for sub-account
      *
-     * @param string $apikey          ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $subAccountEmail Email address of sub-account
      * @param string $publicAccountID Public key of sub-account to list history for. Use subAccountEmail or publicAccountID not both.
      *
      * @return array
      */
     public function LoadSubAccountsEmailCreditsHistory($subAccountEmail = NULL, $publicAccountID = NULL) {
-        return $this->client->Request('account/loadsubaccountsemailcreditshistory', array(
+        return $this->request('account/loadsubaccountsemailcreditshistory', array(
             'subAccountEmail' => $subAccountEmail,
             'publicAccountID' => $publicAccountID
         ));
@@ -305,7 +271,7 @@ class Account
      * @param string $publicAccountID Public key of sub-account to load settings for. Use subAccountEmail or publicAccountID not both.
      */
     public function LoadSubAccountSettings($subAccountEmail = NULL, $publicAccountID = NULL) {
-        return $this->client->Request('account/loadsubaccountsettings', array(
+        return $this->request('account/loadsubaccountsettings', array(
             'subAccountEmail' => $subAccountEmail,
             'publicAccountID' => $publicAccountID
         ));
@@ -320,7 +286,7 @@ class Account
      * @return array
      */
     public function LoadSubAccountsLitmusCreditsHistory($subAccountEmail = NULL, $publicAccountID = NULL) {
-        return $this->client->Request('account/loadsubaccountslitmuscreditshistory', array(
+        return $this->request('account/loadsubaccountslitmuscreditshistory', array(
             'subAccountEmail' => $subAccountEmail,
             'publicAccountID' => $publicAccountID
         ));
@@ -335,7 +301,7 @@ class Account
      * @return array
      */
     public function LoadUsage($from, $to) {
-        return $this->client->Request('account/loadusage', array(
+        return $this->request('account/loadusage', array(
             'from' => $from,
             'to' => $to
         ));
@@ -344,13 +310,12 @@ class Account
     /**
      * Manages your apikeys.
      *
-     * @param string $apiKey APIKey you would like to manage.
-     * @param $action        1 for add, 2 for change, 3 for delete
+     * @param $action 1 for add, 2 for change, 3 for delete
      *
      * @return Array<string>
      */
     public function ManageApiKeys($apiKey, $action) {
-        return $this->client->Request('account/manageapikeys', array(
+        return $this->request('account/manageapikeys', array(
             'apiKey' => $apiKey,
             'action' => $action
         ));
@@ -358,26 +323,23 @@ class Account
     
     /**
      * Shows summary for your account.
-     *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
+     
      */
     public function Overview() {
-        return $this->client->Request('account/overview');
+        return $this->request('account/overview');
     }
     
     /**
      * Shows you account's profile basic overview
-     *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
+     
      */
     public function ProfileOverview() {
-        return $this->client->Request('account/profileoverview');
+        return $this->request('account/profileoverview');
     }
     
     /**
      * Remove email, template or litmus credits from a sub-account
      *
-     * @param string $apikey          ApiKey that gives you access to our SMTP and HTTP API's.
      * @param $creditType             Type of credits to add (Email (9) or Litmus (17))
      * @param string $notes           Specific notes about the transaction
      * @param string $subAccountEmail Email address of sub-account
@@ -386,7 +348,7 @@ class Account
      * @param bool $removeAll         Remove all credits of this type from sub-account (overrides credits if provided)
      */
     public function RemoveSubAccountCredits($creditType, $notes, $subAccountEmail = NULL, $publicAccountID = NULL, $credits = NULL, $removeAll = false) {
-        return $this->client->Request('account/removesubaccountcredits', array(
+        return $this->request('account/removesubaccountcredits', array(
             'creditType' => $creditType,
             'notes' => $notes,
             'subAccountEmail' => $subAccountEmail,
@@ -398,22 +360,20 @@ class Account
     
     /**
      * Request premium support for your account
-     *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
+     
      */
     public function RequestPremiumSupport() {
-        return $this->client->Request('account/requestpremiumsupport');
+        return $this->request('account/requestpremiumsupport');
     }
     
     /**
      * Request a private IP for your Account
      *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
-     * @param int $count     Number of items.
-     * @param string $notes  Free form field of notes
+     * @param int $count    Number of items.
+     * @param string $notes Free form field of notes
      */
     public function RequestPrivateIP($count, $notes) {
-        return $this->client->Request('account/requestprivateip', array(
+        return $this->request('account/requestprivateip', array(
             'count' => $count,
             'notes' => $notes
         ));
@@ -456,7 +416,6 @@ class Account
      * @param ?int $staleContactInactiveDays (0 means this functionality is NOT enabled) Number of days of inactivity for a contact after which the given recipient should be moved to the Stale status
      * @param string $deliveryReason                 Why your clients are receiving your emails.
      * @param ?bool $tutorialsEnabled
-     *
      */
     public function UpdateAdvancedOptions(
         $enableClickTracking = NULL, $enableLinkClickTracking = NULL, $manageSubscriptions = NULL, $manageSubscribedOnly = NULL, $transactionalOnUnsubscribe = NULL, $skipListUnsubscribe = NULL, $autoTextFromHtml = NULL, $allowCustomHeaders = NULL, $bccEmail = NULL, $contentTransferEncoding = NULL,
@@ -464,7 +423,7 @@ class Account
         $webNotificationForAbuseReport = NULL, $webNotificationForError = NULL, $hubCallBackUrl = "", $inboundDomain = NULL, $inboundContactsOnly = NULL, $lowCreditNotification = NULL, $enableUITooltips = NULL, $enableContactFeatures = NULL, $notificationsEmails = NULL,
         $unsubscribeNotificationsEmails = NULL, $logoUrl = NULL, $enableTemplateScripting = true, $staleContactScore = NULL, $staleContactInactiveDays = NULL, $deliveryReason = NULL, $tutorialsEnabled = NULL
     ) {
-        return $this->client->Request('account/updateadvancedoptions', array(
+        return $this->request('account/updateadvancedoptions', array(
             'enableClickTracking' => $enableClickTracking,
             'enableLinkClickTracking' => $enableLinkClickTracking,
             'manageSubscriptions' => $manageSubscriptions,
@@ -514,7 +473,7 @@ class Account
      * @param string $paymentUrl          URL for making payments.
      */
     public function UpdateCustomBranding($enablePrivateBranding = false, $logoUrl = NULL, $supportLink = NULL, $privateBrandingUrl = NULL, $smtpAddress = NULL, $smtpAlternative = NULL, $paymentUrl = NULL) {
-        return $this->client->Request('account/updatecustombranding', array(
+        return $this->request('account/updatecustombranding', array(
             'enablePrivateBranding' => $enablePrivateBranding,
             'logoUrl' => $logoUrl,
             'supportLink' => $supportLink,
@@ -528,13 +487,12 @@ class Account
     /**
      * Update http notification URL.
      *
-     * @param string $apikey           ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $url              URL of notification.
      * @param bool $notifyOncePerEmail True, if you want to receive notifications for each type only once per email. Otherwise, false
      * @param string $settings         Http notification settings serialized to JSON
      */
     public function UpdateHttpNotification($url, $notifyOncePerEmail = false, $settings = NULL) {
-        return $this->client->Request('account/updatehttpnotification', array(
+        return $this->request('account/updatehttpnotification', array(
             'url' => $url,
             'notifyOncePerEmail' => $notifyOncePerEmail,
             'settings' => $settings
@@ -544,7 +502,6 @@ class Account
     /**
      * Update your profile.
      *
-     * @param string $apikey    ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $firstName First name.
      * @param string $lastName  Last name.
      * @param string $address1  First line of address.
@@ -561,7 +518,7 @@ class Account
      * @param string $phone     Phone number
      */
     public function UpdateProfile($firstName, $lastName, $address1, $city, $state, $zip, $countryID, $marketingConsent = NULL, $address2 = NULL, $company = NULL, $website = NULL, $logoUrl = NULL, $taxCode = NULL, $phone = NULL) {
-        return $this->client->Request('account/updateprofile', array(
+        return $this->request('account/updateprofile', array(
             'firstName' => $firstName,
             'lastName' => $lastName,
             'address1' => $address1,
@@ -582,7 +539,6 @@ class Account
     /**
      * Updates settings of specified subaccount
      *
-     * @param string $apikey               ApiKey that gives you access to our SMTP and HTTP API's.
      * @param bool $requiresEmailCredits   True, if account needs credits to send emails. Otherwise, false
      * @param int $monthlyRefillCredits    Amount of credits added to account automatically
      * @param bool $requiresLitmusCredits  True, if account needs credits to send emails. Otherwise, false
@@ -601,7 +557,7 @@ class Account
         $requiresEmailCredits = false, $monthlyRefillCredits = 0, $requiresLitmusCredits = false, $enableLitmusTest = false, $dailySendLimit = NULL, $emailSizeLimit = 10, $enablePrivateIPRequest = false, $maxContacts = 0, $subAccountEmail = NULL, $publicAccountID = NULL, $sendingPermission = NULL,
         $enableContactFeatures = NULL, $poolName = NULL
     ) {
-        return $this->client->Request('account/updatesubaccountsettings', array(
+        return $this->request('account/updatesubaccountsettings', array(
             'requiresEmailCredits' => $requiresEmailCredits,
             'monthlyRefillCredits' => $monthlyRefillCredits,
             'requiresLitmusCredits' => $requiresLitmusCredits,

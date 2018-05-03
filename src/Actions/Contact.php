@@ -1,42 +1,8 @@
 <?php
 namespace ZanySoft\ElasticEmail\Actions;
 
-class Contact
+class Contact extends ApiClient
 {
-    protected $client;
-    
-    protected $account;
-    
-    protected $list_name = NULL;
-    
-    protected $list_id = NULL;
-    
-    public function __construct($apiKey, $account) {
-        $this->account = $account;
-        $this->client  = new ApiClient($apiKey, $account);
-    }
-    
-    public function setListId($list_id) {
-        
-        if ($list_id == '' || $list_id == NULL) {
-            throw new \Exception("List id cannot be null or empty");
-        }
-        
-        $this->list_id = $list_id;
-        
-        return $this;
-    }
-    
-    public function setListName($list_name) {
-        
-        if ($list_name == '' || $list_name == NULL) {
-            throw new \Exception("List name cannot be null or empty");
-        }
-        
-        $this->list_name = $list_name;
-        
-        return $this;
-    }
     
     /**
      * Add a new contact and optionally to one of your lists.  Note that your API KEY is not required for this call.
@@ -117,18 +83,17 @@ class Contact
             $arr['field_' . $key] = $field[$key];
         }
         
-        return $this->client->Request('contact/add', $arr);
+        return $this->request('contact/add', $arr);
     }
     
     /**
      * Manually add or update a contacts status to Abuse or Unsubscribed status (blocked).
      *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $email  Proper email address.
      * @param $status        Name of status: Active, Engaged, Inactive, Abuse, Bounced, Unsubscribed.
      */
     public function AddBlocked($email, $status) {
-        return $this->client->Request('contact/addblocked', array(
+        return $this->request('contact/addblocked', array(
             'email' => $email,
             'status' => $status
         ));
@@ -137,13 +102,12 @@ class Contact
     /**
      * Change any property on the contact record.
      *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $email  Proper email address.
      * @param string $name   Name of the contact property you want to change.
      * @param string $value  Value you would like to change the contact property to.
      */
     public function ChangeProperty($email, $name, $value) {
-        return $this->client->Request('contact/changeproperty', array(
+        return $this->request('contact/changeproperty', array(
             'email' => $email,
             'name' => $name,
             'value' => $value
@@ -153,7 +117,6 @@ class Contact
     /**
      * Changes status of selected Contacts. You may provide RULE for selection or specify list of Contact IDs.
      *
-     * @param string $apikey    ApiKey that gives you access to our SMTP and HTTP API's.
      * @param $status           Name of status: Transactional = -2,Engaged = -1,Active = 0,Bounced = 1,
      *                          Unsubscribed = 2,Abuse = 3,Inactive = 4,Stale = 5,NotConfirmed = 6.
      * @param string $rule      Query used for filtering.
@@ -161,7 +124,7 @@ class Contact
      * @param bool $allContacts True: Include every Contact in your Account. Otherwise, false
      */
     public function ChangeStatus($status, $rule = NULL, array $emails = array(), $allContacts = false) {
-        return $this->client->Request('contact/changestatus', array(
+        return $this->request('contact/changestatus', array(
             'status' => $status,
             'rule' => $rule,
             'emails' => (count($emails) === 0) ? NULL : join(';', $emails),
@@ -172,12 +135,11 @@ class Contact
     /**
      * Returns number of Contacts, RULE specifies contact Status.
      *
-     * @param string $apikey    ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $rule      Query used for filtering.
      * @param bool $allContacts True: Include every Contact in your Account. Otherwise, false
      */
     public function CountByStatus($rule = NULL, $allContacts = false) {
-        return $this->client->Request('contact/countbystatus', array(
+        return $this->request('contact/countbystatus', array(
             'rule' => $rule,
             'allContacts' => $allContacts
         ));
@@ -186,22 +148,20 @@ class Contact
     /**
      * Returns count of unsubscribe reasons for unsubscribed and complaint contacts.
      *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
      */
     public function CountByUnsubscribeReason() {
-        return $this->client->Request('contact/countbyunsubscribereason');
+        return $this->request('contact/countbyunsubscribereason');
     }
     
     /**
      * Permanantly deletes the contacts provided.  You can provide either a qualified rule or a list of emails (comma separated string).
      *
-     * @param string $apikey    ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $rule      Query used for filtering.
      * @param array             <string> $emails Comma delimited list of contact emails
      * @param bool $allContacts True: Include every Contact in your Account. Otherwise, false
      */
     public function EEDelete($rule = NULL, array $emails = array(), $allContacts = false) {
-        return $this->client->Request('contact/delete', array(
+        return $this->request('contact/delete', array(
             'rule' => $rule,
             'emails' => (count($emails) === 0) ? NULL : join(';', $emails),
             'allContacts' => $allContacts
@@ -211,7 +171,6 @@ class Contact
     /**
      * Export selected Contacts to JSON.
      *
-     * @param string $apikey     ApiKey that gives you access to our SMTP and HTTP API's.
      * @param $fileFormat        Format of the exported file 1 = csv, 2=xml, 3=json
      * @param string $rule       Query used for filtering.
      * @param array              <string> $emails Comma delimited list of contact emails
@@ -220,7 +179,7 @@ class Contact
      * @param string $fileName   Name of your file.
      */
     public function Export($fileFormat = 1, $rule = NULL, array $emails = array(), $allContacts = false, $compressionFormat = 0, $fileName = NULL) {
-        return $this->client->Request('contact/export', array(
+        return $this->request('contact/export', array(
             'fileFormat' => $fileFormat,
             'rule' => $rule,
             'emails' => (count($emails) === 0) ? NULL : join(';', $emails),
@@ -233,11 +192,10 @@ class Contact
     /**
      * Finds all Lists and Segments this email belongs to.
      *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $email  Proper email address.
      */
     public function FindContact($email) {
-        return $this->client->Request('contact/findcontact', array(
+        return $this->request('contact/findcontact', array(
             'email' => $email
         ));
     }
@@ -245,13 +203,12 @@ class Contact
     /**
      * List of Contacts for provided List
      *
-     * @param string $apikey   ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $listName Name of your list.
      * @param int $limit       Maximum of loaded items.
      * @param int $offset      How many items should be loaded ahead.
      */
     public function GetContactsByList($listName, $limit = 20, $offset = 0) {
-        return $this->client->Request('contact/getcontactsbylist', array(
+        return $this->request('contact/getcontactsbylist', array(
             'listName' => $listName,
             'limit' => $limit,
             'offset' => $offset
@@ -261,7 +218,6 @@ class Contact
     /**
      * List of Contacts for provided Segment
      *
-     * @param string $apikey      ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $segmentName Name of your segment.
      * @param int $limit          Maximum of loaded items.
      * @param int $offset         How many items should be loaded ahead.
@@ -269,7 +225,7 @@ class Contact
      * @return array
      */
     public function GetContactsBySegment($segmentName, $limit = 20, $offset = 0) {
-        return $this->client->Request('contact/getcontactsbysegment', array(
+        return $this->request('contact/getcontactsbysegment', array(
             'segmentName' => $segmentName,
             'limit' => $limit,
             'offset' => $offset
@@ -279,7 +235,6 @@ class Contact
     /**
      * List of all contacts. If you have not specified RULE, all Contacts will be listed.
      *
-     * @param string $apikey    ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $rule      Query used for filtering.
      * @param bool $allContacts True: Include every Contact in your Account. Otherwise, false
      * @param int $limit        Maximum of loaded items.
@@ -288,7 +243,7 @@ class Contact
      * @return array
      */
     public function EEList($rule = NULL, $allContacts = false, $limit = 20, $offset = 0) {
-        return $this->client->Request('contact/list', array(
+        return $this->request('contact/list', array(
             'rule' => $rule,
             'allContacts' => $allContacts,
             'limit' => $limit,
@@ -299,7 +254,6 @@ class Contact
     /**
      * Load blocked contacts
      *
-     * @param string $apikey  ApiKey that gives you access to our SMTP and HTTP API's.
      * @param array $statuses List of blocked statuses: Abuse, Bounced or Unsubscribed
      * @param string $search  Text fragment used for searching.
      * @param int $limit      Maximum of loaded items.
@@ -308,7 +262,7 @@ class Contact
      * @return array
      */
     public function LoadBlocked($statuses, $search = NULL, $limit = 0, $offset = 0) {
-        return $this->client->Request('contact/loadblocked', array(
+        return $this->request('contact/loadblocked', array(
             'statuses' => (count($statuses) === 0) ? NULL : join(';', $statuses),
             'search' => $search,
             'limit' => $limit,
@@ -319,11 +273,10 @@ class Contact
     /**
      * Load detailed contact information
      *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $email  Proper email address.
      */
     public function LoadContact($email) {
-        return $this->client->Request('contact/loadcontact', array(
+        return $this->request('contact/loadcontact', array(
             'email' => $email
         ));
     }
@@ -331,7 +284,6 @@ class Contact
     /**
      * Shows detailed history of chosen Contact.
      *
-     * @param string $apikey ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $email  Proper email address.
      * @param int $limit     Maximum of loaded items.
      * @param int $offset    How many items should be loaded ahead.
@@ -339,7 +291,7 @@ class Contact
      * @return array
      */
     public function LoadHistory($email, $limit = 0, $offset = 0) {
-        return $this->client->Request('contact/loadhistory', array(
+        return $this->request('contact/loadhistory', array(
             'email' => $email,
             'limit' => $limit,
             'offset' => $offset
@@ -349,7 +301,6 @@ class Contact
     /**
      * Add new Contact to one of your Lists.
      *
-     * @param string $apikey       ApiKey that gives you access to our SMTP and HTTP API's.
      * @param array                <string> $emails Comma delimited list of contact emails
      * @param string $firstName    First name.
      * @param string $lastName     Last name.
@@ -372,7 +323,7 @@ class Contact
         $emails, $firstName = NULL, $lastName = NULL, $title = NULL, $organization = NULL, $industry = NULL, $city = NULL, $country = NULL, $state = NULL, $zip = NULL, $publicListID = NULL, $status = 0, $notes = NULL, $consentDate = NULL,
         $consentIP = NULL, $notifyEmail = NULL
     ) {
-        return $this->client->Request('contact/quickadd', array(
+        return $this->request('contact/quickadd', array(
             'emails' => (count($emails) === 0) ? NULL : join(';', $emails),
             'firstName' => $firstName,
             'lastName' => $lastName,
@@ -401,7 +352,7 @@ class Contact
      * @return string
      */
     public function Subscribe($publicAccountID) {
-        return $this->client->Request('contact/subscribe', array(
+        return $this->request('contact/subscribe', array(
             'publicAccountID' => $publicAccountID
         ));
     }
@@ -409,7 +360,6 @@ class Contact
     /**
      * Update selected contact. Omitted contact's fields will be reset by default (see the clearRestOfFields parameter)
      *
-     * @param string $apikey              ApiKey that gives you access to our SMTP and HTTP API's.
      * @param string $email               Proper email address.
      * @param string $firstName           First name.
      * @param string $lastName            Last name.
@@ -487,13 +437,12 @@ class Contact
             $arr['field_' . $key] = $field[$key];
         }
         
-        return $this->client->Request('contact/update', $arr);
+        return $this->request('contact/update', $arr);
     }
     
     /**
      * Upload contacts in CSV file.
      *
-     * @param string $apikey         ApiKey that gives you access to our SMTP and HTTP API's.
      * @param File $contactFile      Name of CSV file with Contacts.
      * @param bool $allowUnsubscribe True: Allow unsubscribing from this (optional) newly created list. Otherwise, false
      * @param ?int $listID ID number of selected list.
@@ -504,8 +453,8 @@ class Contact
      *
      * @return int
      */
-    public function Upload($contactFile, $allowUnsubscribe = false, $status = 0, $consentDate = NULL, $consentIP = NULL) {
-        return $this->client->Request('contact/upload', array(
+    public function upload($contactFile, $allowUnsubscribe = false, $status = 0, $consentDate = NULL, $consentIP = NULL) {
+        return $this->request('contact/upload', array(
             'allowUnsubscribe' => $allowUnsubscribe,
             'listID' => $this->list_id,
             'listName' => $this->list_name,

@@ -12,7 +12,7 @@ class ApiServiceProvider extends ServiceProvider
      */
     public function register() {
         $this->app->singleton('ElasticEmail', function () {
-            return new Api();
+            return new ElasticApi();
         });
     }
 }

@@ -18,7 +18,7 @@ Next, add the following to your config/services.php and add the correct values t
 ]
 ```
 
-Next, in config/app.php, comment out Laravel's default MailServiceProvider. If using < Laravel 5.5, add the MailServiceProvider to the providers array
+Next, in config/app.php, comment out Laravel's default MailServiceProvider. If using < Laravel 5.5, add the MailServiceProvider and ApiServiceProvider to the providers array
 ```php
 'providers' => [
     /*
@@ -27,6 +27,16 @@ Next, in config/app.php, comment out Laravel's default MailServiceProvider. If u
     ...
 //    Illuminate\Mail\MailServiceProvider::class,
     ZanySoft\ElasticEmail\MailServiceProvider::class,
+    ZanySoft\ElasticEmail\ApiServiceProvider::class,
+    ...
+],
+```
+
+Next, in config/app.php, add the ElasticEmail to the aliases array
+```php
+'aliases' => [
+    ...
+    'ElasticEmail' => ZanySoft\ElasticEmail\Facades\ElasticEmail::class,
     ...
 ],
 ```
