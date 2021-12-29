@@ -1,35 +1,41 @@
 {
-   "name": "zanysoft/laravel-elastic-email",
-   "description": "A Laravel wrapper for Elastic Email",
-   "keywords": ["laravel", "email", "elastic email"],
-   "license": "MIT",
-   "authors": [
-	  {
-		 "company": "Zany Soft",
-		 "email": "info@zanysoft.co",
-		 "url": "http://www.zanysoft.co",
-		 "role": "Developer"
-	  }
-   ],
-   "support": {
-	  "email": "info@zanysoft.co"
-   },
-   "require": {
-	  "php": ">=7.0.26",
-	  "laravel/framework": "5.3.x|5.4.x|5.5.x|5.6.x",
-	  "guzzlehttp/guzzle": ">=6.3"
-   },
-   "autoload": {
-	  "psr-4": {
-		 "ZanySoft\\ElasticEmail\\": "src/"
-	  }
-   },
-   "extra": {
-	  "laravel": {
-		 "providers": [
-			"ZanySoft\\ElasticEmail\\MailServiceProvider"
-		 ]
-	  }
-   },
-   "minimum-stability": "stable"
+  "name": "zanysoft/laravel-elastic-email",
+  "description": "A Laravel wrapper for Elastic Email",
+  "keywords": [
+    "laravel",
+    "email",
+    "elastic email"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "company": "Zany Soft",
+      "email": "info@zanysoft.net",
+      "url": "http://www.zanysoft.net",
+    }
+  ],
+  "support": {
+    "email": "info@zanysoft.net"
+  },
+  "require": {
+    "php": "^7.1",
+    "laravel/framework": "~5.1|^6.0|~7.0",
+    "guzzlehttp/guzzle": "^6.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "ZanySoft\\ElasticEmail\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "ZanySoft\\ElasticEmail\\MailServiceProvider"
+      ],
+      "aliases": {
+        "ElasticEmail": "ZanySoft\\ElasticEmail\\Facades\\ElasticEmail"
+      }
+    }
+  },
+  "minimum-stability": "stable"
 }
