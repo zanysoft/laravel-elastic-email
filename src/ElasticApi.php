@@ -1,4 +1,5 @@
 <?php
+
 namespace ZanySoft\ElasticEmail;
 
 use ZanySoft\ElasticEmail\Actions;
@@ -6,62 +7,76 @@ use ZanySoft\ElasticEmail\Actions\ApiClient;
 
 class ElasticApi extends ApiClient
 {
-    public function Account() {
+    public function Account()
+    {
         return new Actions\Account();
     }
 
-    public function Attachment() {
+    public function Attachment()
+    {
         return new Actions\Attachment();
     }
-    
-    public function Campaign() {
+
+    public function Campaign()
+    {
         return new Actions\Campaign();
     }
-    
-    public function Channel() {
+
+    public function Channel()
+    {
         return new Actions\Channel();
     }
-    
-    public function Contact() {
+
+    public function Contact()
+    {
         return new Actions\Contact();
     }
-    
-    public function Domain() {
+
+    public function Domain()
+    {
         return new Actions\Domain();
     }
-    
-    public function EmailList() {
+
+    public function EmailList()
+    {
         return new Actions\EEList();
     }
-    
-    public function Email() {
+
+    public function Email()
+    {
         return new Actions\Email();
     }
-    
-    public function Export() {
+
+    public function Export()
+    {
         return new Actions\Export();
     }
-    
-    public function Log() {
+
+    public function Log()
+    {
         return new Actions\Log();
     }
-    
-    public function Segment() {
+
+    public function Segment()
+    {
         return new Actions\Segment();
     }
-    
-    public function SMS() {
+
+    public function SMS()
+    {
         return new Actions\SMS();
     }
-    
-    public function Survay() {
+
+    public function Survay()
+    {
         return new Actions\Survey();
     }
-    
-    public function Template() {
+
+    public function Template()
+    {
         return new Actions\Template();
     }
-    
+
     /*public function __call($name, $arguments) {
 
         if ($name == 'EmailList') {
@@ -76,6 +91,6 @@ class ElasticApi extends ApiClient
             throw new \Exception("Invalid function: " . $name . "()");
         }
     }*/
-    
+
 }
 

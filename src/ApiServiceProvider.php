@@ -10,7 +10,8 @@ class ApiServiceProvider extends ServiceProvider
      * Register the Swift Transport instance.
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->app->singleton('ElasticEmail', function () {
             return new ElasticApi();
         });
