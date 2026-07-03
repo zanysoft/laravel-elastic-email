@@ -1,5 +1,9 @@
 # Laravel Elastic Email #
 
+[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Software License][ico-license]](LICENSE.md)
+[![Total Downloads][ico-downloads]][link-downloads]
+
 A Laravel wrapper for Elastic Email
 
 ### Installation ###
@@ -63,3 +67,13 @@ For documentation visit https://api.elasticemail.com/public/help
     ElasticEmail::Email()
 
 ```
+
+[ico-version]: https://img.shields.io/packagist/v/zanysoft/laravel-elastic-email.svg?style=flat-square
+[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/zanysoft/MailTracker.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/zanysoft/MailTracker.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/zanysoft/laravel-elastic-email.svg?style=flat-square
+[link-packagist]: https://packagist.org/packages/zanysoft/laravel-elastic-email
+[link-downloads]: https://packagist.org/packages/zanysoft/laravel-elastic-email
+[link-author]: https://github.com/zanysoft
+[email-me]: mailto:zanysoft.us@gmail.com
